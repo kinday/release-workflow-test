@@ -22,14 +22,22 @@ jobs:
           PREV_VERSION="$(git tag --merged main --sort=-version:refname || echo "")"
           NEXT_VERSION="v$(date +"%Y%m%d.%H.%M%S")"
 
-          if [[ "${PREV_VERSION}" != "" ]]; then
-            gh release create "${NEXT_VERSION}" --notes-start-tag "${PREV_VERSION}" --generate-notes
-          else
-            gh release create "${NEXT_VERSION}"
+          PREV_SHA="$(git rev-parse "${PREV_VERSION}" || echo "")"
+          if [[ "${PREV_SHA}" == "$(git rev-parse HEAD)" ]]; then
+            NEXT_VERSION=""
+          fi
+
+          if [[ "${NEXT_VERSION}" != "" ]]; then
+            if [[ "${PREV_VERSION}" != "" ]]; then
+              gh release create "${NEXT_VERSION}" --notes-start-tag "${PREV_VERSION}" --generate-notes
+            else
+              gh release create "${NEXT_VERSION}"
+            fi
           fi
 
           echo "version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
   deploy:
+    if: ${{ needs.release.outputs.version != "" }}
     needs: release
     uses: ./.github/workflows/deployment.yml
     with:

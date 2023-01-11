@@ -13,6 +13,7 @@ jobs:
       - name: git checkout
         uses: actions/checkout@v3
       - name: Create release
+        id: release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -24,3 +25,9 @@ jobs:
           else
             gh release create "${NEXT_VERSION}"
           fi
+
+          echo "version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
+      - name: Deploy
+        uses: ./.github/workflows/deployment.yml
+        with:
+          version: ${{ steps.release.outputs.version }}"

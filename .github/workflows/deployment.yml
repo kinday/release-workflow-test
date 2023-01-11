@@ -1,13 +1,22 @@
 name: "Deployment"
 
 on:
-  push:
-    tags:
-      - "v**"
+  workflow_call:
+    inputs:
+      version:
+        description: "A version tag to deploy"
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "A version tag to deploy"
+        required: true
+        type: string
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
-        run: echo "Deployed"
+        run: echo "Deployed ${{ inputs.version }}"

@@ -1,0 +1,22 @@
+name: "Release"
+
+on:
+  workflow_dispatch:
+    branches: [main]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v3
+      - name: Create release
+        run: |
+          PREV_VERSION="$(git tag --merged main --sort=-version:refname || echo "")"
+          NEXT_VERSION="v$(date +"%Y%m%d.%H.%M%S")"
+
+          if [[ "${PREV_VERSION}" != "" ]]; then
+            gh release create "${NEXT_VERSION}" --notes-start-tag "${PREV_VERSION}" --generate-notes
+          else
+            gh release create "${NEXT_VERSION}"
+          fi

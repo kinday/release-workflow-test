@@ -19,7 +19,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          PREV_VERSION="$(git tag --merged main --sort=-version:refname || echo "")"
+          PREV_VERSION="$(git describe --tags --abbrev=0 || echo "")"
           NEXT_VERSION="v$(date +"%Y%m%d.%H.%M%S")"
 
           PREV_SHA="$(git rev-parse "${PREV_VERSION}" || echo "")"

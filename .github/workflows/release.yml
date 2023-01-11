@@ -27,7 +27,7 @@ jobs:
           fi
 
           echo "version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
-      - name: Deploy
-        uses: ./.github/workflows/deployment.yml
-        with:
-          version: ${{ steps.release.outputs.version }}"
+  deploy:
+    uses: ./.github/workflows/deployment.yml
+    with:
+      version: ${{ steps.release.outputs.version }}"

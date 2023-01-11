@@ -1,0 +1,13 @@
+name: "Deployment"
+
+on:
+  push:
+    tags:
+      - v**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: echo "Deployed"

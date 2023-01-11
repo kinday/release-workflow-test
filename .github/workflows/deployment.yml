@@ -2,8 +2,8 @@ name: "Deployment"
 
 on:
   push:
-    tags:
-      - v**
+    branches: [main]
+    tags: [v*]
 
 jobs:
   deploy:

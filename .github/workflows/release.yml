@@ -33,4 +33,4 @@ jobs:
     needs: release
     uses: ./.github/workflows/deployment.yml
     with:
-      version: ${{ needs.release.outputs.version }}"
+      version: ${{ needs.release.outputs.version }}

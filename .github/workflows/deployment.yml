@@ -1,8 +1,9 @@
 name: "Deployment"
 
 on:
-  release:
-    types: [released]
+  push:
+    tags:
+      - v**
 
 jobs:
   deploy:

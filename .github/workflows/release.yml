@@ -7,7 +7,7 @@ on:
 jobs:
   release:
     outputs:
-      version: ${{ steps.release.outputs.version }}
+      version: ${{ steps.versions.outputs.next }}
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -29,8 +29,8 @@ jobs:
           gh release create "${{ steps.versions.outputs.next }}"
 
   deploy:
-    if: ${{ needs.versions.outputs.next }}
-    needs: [versions, release]
+    if: ${{ needs.release.outputs.version }}
+    needs: release
     uses: ./.github/workflows/deployment.yml
     with:
-      version: ${{ needs.versions.outputs.next }}
+      version: ${{ needs.release.outputs.version }}

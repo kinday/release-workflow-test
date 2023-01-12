@@ -1,8 +1,8 @@
-FROM alpine:3.17.0
+FROM debian:stable-slim
 
-RUN apk update
+RUN apt update
 
-RUN apk add git
+RUN apt install git
 
 COPY entrypoint.sh /entrypoint.sh
 

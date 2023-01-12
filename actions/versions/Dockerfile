@@ -4,8 +4,6 @@ RUN apk update
 
 RUN apk add git
 
-RUN git config --global --add safe.directory "*"
-
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]

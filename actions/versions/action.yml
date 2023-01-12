@@ -1,0 +1,11 @@
+# action.yml
+name: "Versions"
+description: "Calculate previous and next versions"
+outputs:
+  next:
+    description: "Next version if available"
+  previous:
+    description: "Previous version if available"
+runs:
+  using: "docker"
+  image: "Dockerfile"

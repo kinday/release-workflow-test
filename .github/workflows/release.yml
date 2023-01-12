@@ -17,6 +17,9 @@ jobs:
         with:
           # Fetch all history for all tags and branches
           fetch-depth: 0
+      - name: Verify release
+        id: versions
+        uses: ./actions/versions
       - name: Create release
         id: release
         env:

@@ -22,29 +22,15 @@ jobs:
         uses: ./actions/versions
       - name: Create release
         id: release
+        if: ${{ steps.versions.outputs.next }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          PREV_VERSION="$(git describe --tags --abbrev=0 || echo "")"
-          NEXT_VERSION="v$(date +"%Y%m%d.%H.%M%S")"
+          gh release create "${{ steps.versions.outputs.next }}"
 
-          PREV_SHA="$(git rev-parse "${PREV_VERSION}" || echo "")"
-          if [[ "${PREV_SHA}" == "$(git rev-parse HEAD)" ]]; then
-            NEXT_VERSION=""
-          fi
-
-          if [[ "${NEXT_VERSION}" != "" ]]; then
-            if [[ "${PREV_VERSION}" != "" ]]; then
-              gh release create "${NEXT_VERSION}" --notes-start-tag "${PREV_VERSION}" --generate-notes
-            else
-              gh release create "${NEXT_VERSION}"
-            fi
-          fi
-
-          echo "version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
   deploy:
-    if: ${{ needs.release.outputs.version }}
-    needs: release
+    if: ${{ needs.versions.outputs.next }}
+    needs: [versions, release]
     uses: ./.github/workflows/deployment.yml
     with:
-      version: ${{ needs.release.outputs.version }}
+      version: ${{ needs.versions.outputs.next }}

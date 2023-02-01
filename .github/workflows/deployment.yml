@@ -25,4 +25,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release download ${{ inputs.version }} --pattern dist.tgz
+          mkdir app
           tar -xvzf dist.tgz --directory app
+          ls -la app

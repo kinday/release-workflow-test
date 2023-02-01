@@ -17,8 +17,12 @@ jobs:
         with:
           # Fetch all history for all tags and branches
           fetch-depth: 0
-      - name: Debug
-        run: ls -la
+      - name: Build
+        run: |
+          mkdir dist
+          dd if=/dev/urandom of=dist/a.txt count=4 bs=1024
+          dd if=/dev/urandom of=dist/b.txt count=4 bs=1024
+          dd if=/dev/urandom of=dist/c.txt count=4 bs=1024
       - name: Verify release
         id: versions
         uses: ./actions/versions
@@ -28,7 +32,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${{ steps.versions.outputs.next }}"
+          tar -cvzf dist.tgz dist
+          gh release create "${{ steps.versions.outputs.next }}" dist.tgz
 
   deploy:
     if: ${{ needs.release.outputs.version }}

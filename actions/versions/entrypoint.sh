@@ -4,6 +4,8 @@ whoami
 
 ls -la .
 
+git config --global --add safe.directory /github/workspace
+
 PREV_VERSION="$(git describe --tags --abbrev=0 || echo "")"
 NEXT_VERSION="v$(date +"%Y%m%d.%H.%M%S")"
 
